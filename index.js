@@ -80,7 +80,7 @@ const runTests = async (req, res) => {
 };
 
 app.get("/", (req, res) => {
-  res.send("Hello world");
+  res.json({ data: "Hello world" });
 });
 
 app.post("/tests", (req, res) => {
