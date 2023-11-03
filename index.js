@@ -73,9 +73,9 @@ const runTests = async (req, res) => {
       });
     });
 
-    res.send(output);
+    res.json({ data: output });
   } catch (e) {
-    res.send(e);
+    res.json({ error: e });
   }
 };
 
