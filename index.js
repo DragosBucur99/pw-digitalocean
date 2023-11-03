@@ -31,9 +31,11 @@ const runTests = async (req, res) => {
       });
     });
 
-    res.send(output);
+    // res.send(output);
+    res.send("done");
   } catch (e) {
-    res.send(e + output);
+    // res.send(e + output);
+    res.send(e);
   }
 };
 
