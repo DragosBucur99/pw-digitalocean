@@ -38,12 +38,12 @@ const runTests = async (req, res) => {
 };
 
 // Replace these functions with your actual token generation and verification logic.
-function generateToken() {
-  return "test";
-}
+// function generateToken() {
+//   return "test";
+// }
 
 function verifyToken(token) {
-  return token === "your_generated_token_here";
+  return token === "testToken";
 }
 
 // Middleware to check for a valid token
@@ -60,24 +60,17 @@ function requireToken(req, res, next) {
 app.use(cors());
 app.use(express.json());
 
-app.use(
-  "/api",
-  cors({
-    origin: "https://www.api.dragosportfolio.com/",
-  })
-);
+// app.get("/api/test", (req, res) => {
+//   res.json({ message: "This is the /api/test endpoint" });
+// });
 
-app.get("/api/test", (req, res) => {
-  res.json({ message: "This is the /api/test endpoint" });
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
-// app.get("/", (req, res) => {
-//   res.send("Hello World!");
-// });
-
-// app.post("/tests", requireToken, (req, res) => {
-//   runTests(req, res);
-// });
+app.post("/tests", requireToken, (req, res) => {
+  runTests(req, res);
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
