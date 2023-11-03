@@ -44,6 +44,7 @@
 
 const express = require("express");
 const cors = require("cors");
+const { exec } = require("child_process");
 const app = express();
 const port = 3000;
 
@@ -86,7 +87,7 @@ app.get("/", (req, res) => {
   res.json({ data: "Hello world" });
 });
 
-app.post("/tests", (req, res) => {
+app.get("/tests", (req, res) => {
   runTests(req, res);
 });
 
