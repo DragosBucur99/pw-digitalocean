@@ -1,6 +1,7 @@
 const { exec } = require("child_process");
 
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3000;
 const runTests = async (req, res) => {
@@ -36,13 +37,47 @@ const runTests = async (req, res) => {
   }
 };
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+// Replace these functions with your actual token generation and verification logic.
+function generateToken() {
+  return "test";
+}
+
+function verifyToken(token) {
+  return token === "your_generated_token_here";
+}
+
+// Middleware to check for a valid token
+function requireToken(req, res, next) {
+  const token = req.headers["authorization"];
+
+  if (!token || !verifyToken(token)) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  next();
+}
+
+app.use(cors());
+app.use(express.json());
+
+app.use(
+  "/api",
+  cors({
+    origin: "https://www.dragosportfolio.com/",
+  })
+);
+
+app.get("/api/test", (req, res) => {
+  res.json({ message: "This is the /api/test endpoint" });
 });
 
-app.get("/tests", (req, res) => {
-  runTests(req, res);
-});
+// app.get("/", (req, res) => {
+//   res.send("Hello World!");
+// });
+
+// app.post("/tests", requireToken, (req, res) => {
+//   runTests(req, res);
+// });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
