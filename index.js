@@ -2,6 +2,7 @@ const { exec } = require("child_process");
 
 const express = require("express");
 const cors = require("cors");
+const { json } = require("express/lib/response");
 const app = express();
 const port = process.env.PORT || 3000;
 const runTests = async (req, res) => {
@@ -31,11 +32,9 @@ const runTests = async (req, res) => {
       });
     });
 
-    // res.send(output);
-    res.send("done");
+    res.json({ output });
   } catch (e) {
-    // res.send(e + output);
-    res.send(e);
+    res.json({ error: e });
   }
 };
 
@@ -60,6 +59,7 @@ function requireToken(req, res, next) {
 }
 
 app.use(cors());
+app.use(json());
 
 // app.get("/api/test", (req, res) => {
 //   res.json({ message: "This is the /api/test endpoint" });
