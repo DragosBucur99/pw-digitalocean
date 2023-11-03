@@ -80,8 +80,7 @@ const runTests = async (req, res) => {
 };
 
 app.get("/", (req, res) => {
-  res.setHeader("Content-Type", "application/json");
-  res.send(JSON.stringify({ message: "Hello World!" }));
+  res.send("Hello world");
 });
 
 app.post("/tests", (req, res) => {
