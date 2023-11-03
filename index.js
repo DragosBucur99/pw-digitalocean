@@ -80,6 +80,7 @@ const runTests = async (req, res) => {
 };
 
 app.get("/", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
   res.json({ message: "Hello World!" });
 });
 
