@@ -66,7 +66,7 @@ app.use(json());
 // });
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.json({ message: "Hello world!" });
 });
 
 app.post("/tests", requireToken, (req, res) => {
