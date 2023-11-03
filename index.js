@@ -43,6 +43,7 @@
 // });
 
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = 3000;
 
@@ -78,6 +79,8 @@ const runTests = async (req, res) => {
     res.json({ error: e });
   }
 };
+
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.json({ data: "Hello world" });
