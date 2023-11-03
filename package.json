@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx playwright install --with-deps chromium && node index.js",
+    "start": "npx playwright install --with-deps chromium && pm2 start index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
