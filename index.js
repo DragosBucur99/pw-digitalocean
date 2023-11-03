@@ -63,7 +63,7 @@ app.use(express.json());
 app.use(
   "/api",
   cors({
-    origin: "https://www.dragosportfolio.com/",
+    origin: "https://www.api.dragosportfolio.com/",
   })
 );
 
