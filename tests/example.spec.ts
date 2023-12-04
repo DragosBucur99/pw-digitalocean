@@ -1,18 +1,77 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
-
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
+test("should add food", async ({ page }) => {
+  await page.goto("https://reactfitnessapp-gilt.vercel.app/");
+  await page
+    .getByRole("button", { name: "Put some meat on your bones!" })
+    .click();
+  await page
+    .getByPlaceholder("What have you eaten?")
+    .fill(process.env.ITEM || "");
+  await Promise.all([
+    page.waitForResponse(
+      (res) => res.status() == 200 && res.url().includes(process.env.ITEM || "")
+    ),
+    page.getByRole("button", { name: "Add meal" }).click(),
+  ]);
+  await expect(
+    page.locator("span").filter({ hasText: process.env.ITEM })
+  ).toBeVisible();
 });
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test("should delete food", async ({ page }) => {
+  await page.goto("https://reactfitnessapp-gilt.vercel.app/");
+  await page
+    .getByRole("button", { name: "Put some meat on your bones!" })
+    .click();
+  await page
+    .getByPlaceholder("What have you eaten?")
+    .fill(process.env.ITEM || "");
+  await Promise.all([
+    page.waitForResponse(
+      (res) => res.status() == 200 && res.url().includes(process.env.ITEM || "")
+    ),
+    page.getByRole("button", { name: "Add meal" }).click(),
+  ]);
+  await expect(
+    page.locator("span").filter({ hasText: process.env.ITEM })
+  ).toBeVisible();
+});
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+test("should create a task", async ({ page }) => {
+  await page.goto("https://reactfitnessapp-gilt.vercel.app/");
+  await page
+    .getByRole("button", { name: "Put some meat on your bones!" })
+    .click();
+  await page
+    .getByPlaceholder("What have you eaten?")
+    .fill(process.env.ITEM || "");
+  await Promise.all([
+    page.waitForResponse(
+      (res) => res.status() == 200 && res.url().includes(process.env.ITEM || "")
+    ),
+    page.getByRole("button", { name: "Add meal" }).click(),
+  ]);
+  await expect(
+    page.locator("span").filter({ hasText: process.env.ITEM })
+  ).toBeVisible();
+});
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+test("should delete a task", async ({ page }) => {
+  await page.goto("https://reactfitnessapp-gilt.vercel.app/");
+  await page
+    .getByRole("button", { name: "Put some meat on your bones!" })
+    .click();
+  await page
+    .getByPlaceholder("What have you eaten?")
+    .fill(process.env.ITEM || "");
+  await Promise.all([
+    page.waitForResponse(
+      (res) => res.status() == 200 && res.url().includes(process.env.ITEM || "")
+    ),
+    page.getByRole("button", { name: "Add meal" }).click(),
+  ]);
+  await expect(
+    page.locator("span").filter({ hasText: process.env.ITEM })
+  ).toBeVisible();
 });
