@@ -1,3 +1,4 @@
+const { testCases } = require("./tests-doc/fitnessApp.js");
 const { exec } = require("child_process");
 const fs = require("fs");
 const archiver = require("archiver");
@@ -100,7 +101,7 @@ app.post("/playground", async (req, res) => {
 });
 
 app.get("/tests", (req, res) => {
-  const testsFolder = path.join(__dirname, "tests"); // Assuming tests folder is in the root of your application
+  const testsFolder = path.join(__dirname, "tests");
 
   // Read all files in the tests folder
   fs.readdir(testsFolder, (err, files) => {
@@ -124,9 +125,22 @@ app.get("/tests", (req, res) => {
 
         if (titleMatches) {
           titleMatches.forEach((match) => {
-            // Extract the test title and add it to the array
-            const title = match.replace(/test\(["']|(.*?)["']\)/g, "$1");
-            tests.push(title);
+            // Extract the test title and add it to the arra
+            const title = match
+              .replace(/test\(["']|(.*?)["']\)/g, "$1")
+              .replace(/['"]/g, "");
+            const testCase = testCases.find(
+              (testCase) => testCase.title === title
+            );
+            if (testCase) {
+              tests.push(testCase);
+            } else {
+              tests.push({
+                title,
+                steps: undefined,
+                expectedOutput: undefined,
+              });
+            }
           });
         }
       }
