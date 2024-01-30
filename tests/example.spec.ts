@@ -24,7 +24,9 @@ test("should create a task", async ({ page }) => {
   await page.getByRole("button", { name: "CREATE TASK" }).click();
   await page.locator("input[placeholder='Pick a due date (optional)']").click();
   await page.getByText("20", { exact: true }).click();
-  await page.getByText("Medium", { exact: true }).click();
+  await page
+    .getByText(process.env.TASK_PRIORITY_LEVEL || "", { exact: true })
+    .click();
   await page
     .getByPlaceholder("What are you planning?")
     .fill(process.env.TASK_NAME || "");
@@ -32,4 +34,5 @@ test("should create a task", async ({ page }) => {
   await expect(
     page.getByText("remaining tasks: 1", { exact: true })
   ).toBeVisible();
+  await page.waitForTimeout(2000); // Change this
 });
