@@ -37,8 +37,15 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
-    screenshot: "on",
+    video: "on",
     headless: true,
+    viewport: {
+      width: 1920,
+      height: 1080,
+    },
+    launchOptions: {
+      slowMo: 500,
+    },
   },
 
   // grep: process.env.RUNNING_ENV !== "test" ? /has title/ : undefined,

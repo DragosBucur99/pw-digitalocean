@@ -11,6 +11,9 @@ test("should add food", async ({ page }) => {
   await page
     .getByPlaceholder("What have you eaten?")
     .fill(process.env.FOOD || "");
+  await page
+    .locator("input[type='number']")
+    .fill(process.env.FOOD_AMOUNT || "");
   await Promise.all([
     page.waitForResponse(
       (res) => res.status() == 200 && res.url().includes(process.env.FOOD || "")
@@ -18,7 +21,12 @@ test("should add food", async ({ page }) => {
     page.getByRole("button", { name: "Add meal" }).click(),
   ]);
   await expect(
-    page.locator("span").filter({ hasText: process.env.FOOD })
+    page.locator("[data-cy='meal']").filter({ hasText: process.env.FOOD })
+  ).toBeVisible();
+  await expect(
+    page
+      .locator("[data-cy='meal']")
+      .filter({ hasText: process.env.FOOD_AMOUNT })
   ).toBeVisible();
 });
 
@@ -29,6 +37,9 @@ test("should edit food", async ({ page }) => {
   await page
     .getByPlaceholder("What have you eaten?")
     .fill(process.env.FOOD || "");
+  await page
+    .locator("input[type='number']")
+    .fill(process.env.FOOD_AMOUNT || "");
   await Promise.all([
     page.waitForResponse(
       (res) => res.status() == 200 && res.url().includes(process.env.FOOD || "")
@@ -36,7 +47,27 @@ test("should edit food", async ({ page }) => {
     page.getByRole("button", { name: "Add meal" }).click(),
   ]);
   await expect(
-    page.locator("span").filter({ hasText: process.env.FOOD })
+    page.locator("[data-cy='meal']").filter({ hasText: process.env.FOOD })
+  ).toBeVisible();
+  await expect(
+    page
+      .locator("[data-cy='meal']")
+      .filter({ hasText: process.env.FOOD_AMOUNT })
+  ).toBeVisible();
+  await page.locator("[data-cy='meal-menu-cta']").click();
+  await page.locator("[data-cy='meal-menu-edit-btn']").click();
+  await page.locator("[data-cy='meal']").click();
+  await page
+    .locator("[data-cy='meal-new-amount-input']")
+    .fill(process.env.NEW_FOOD_AMOUNT || "");
+  await page.locator("[data-cy='meal-menu-confirm-edit-btn']").click();
+  await expect(
+    page.locator("[data-cy='meal-menu-confirm-edit-btn']")
+  ).toBeHidden();
+  await expect(
+    page
+      .locator("[data-cy='meal']")
+      .filter({ hasText: process.env.NEW_FOOD_AMOUNT })
   ).toBeVisible();
 });
 
@@ -47,6 +78,9 @@ test("should delete food", async ({ page }) => {
   await page
     .getByPlaceholder("What have you eaten?")
     .fill(process.env.FOOD || "");
+  await page
+    .locator("input[type='number']")
+    .fill(process.env.FOOD_AMOUNT || "");
   await Promise.all([
     page.waitForResponse(
       (res) => res.status() == 200 && res.url().includes(process.env.FOOD || "")
@@ -54,14 +88,27 @@ test("should delete food", async ({ page }) => {
     page.getByRole("button", { name: "Add meal" }).click(),
   ]);
   await expect(
-    page.locator("span").filter({ hasText: process.env.FOOD })
+    page.locator("[data-cy='meal']").filter({ hasText: process.env.FOOD })
   ).toBeVisible();
+  await expect(
+    page
+      .locator("[data-cy='meal']")
+      .filter({ hasText: process.env.FOOD_AMOUNT })
+  ).toBeVisible();
+  await page.locator("[data-cy='meal-menu-cta']").click();
+  await page.locator("[data-cy='meal-menu-delete-btn']").click();
+  await page.locator("[data-cy='meal']").click();
+  await page.locator("[data-cy='meal-menu-confirm-delete-btn']").click();
+  await expect(
+    page.locator("[data-cy='meal']").filter({ hasText: process.env.FOOD })
+  ).toBeHidden();
 });
 
 test("should create task", async ({ page }) => {
   await page.getByRole("button", { name: "CREATE TASK" }).click();
-  await page.locator("input[placeholder='Pick a due date (optional)']").click();
-  await page.getByText("20", { exact: true }).click();
+  await page
+    .locator("input[placeholder*='due date']")
+    .fill(process.env.TASK_DUE_DATE || "");
   await page
     .getByText(process.env.TASK_PRIORITY_LEVEL || "", { exact: true })
     .click();
@@ -72,13 +119,14 @@ test("should create task", async ({ page }) => {
   await expect(
     page.getByText("remaining tasks: 1", { exact: true })
   ).toBeVisible();
-  await page.waitForTimeout(2000); // Change this
+  await page.waitForTimeout(1000); // Change this
 });
 
 test("should mark task as done", async ({ page }) => {
   await page.getByRole("button", { name: "CREATE TASK" }).click();
-  await page.locator("input[placeholder='Pick a due date (optional)']").click();
-  await page.getByText("20", { exact: true }).click();
+  await page
+    .locator("input[placeholder*='due date']")
+    .fill(process.env.TASK_DUE_DATE || "");
   await page
     .getByText(process.env.TASK_PRIORITY_LEVEL || "", { exact: true })
     .click();
@@ -89,13 +137,26 @@ test("should mark task as done", async ({ page }) => {
   await expect(
     page.getByText("remaining tasks: 1", { exact: true })
   ).toBeVisible();
-  await page.waitForTimeout(2000); // Change this
+  await expect(
+    page.locator("[data-cy='todo']").filter({ hasText: process.env.TASK_NAME })
+  ).toBeVisible();
+  await page
+    .locator("[data-cy='todo']")
+    .filter({ hasText: process.env.TASK_NAME })
+    .locator("svg")
+    .first()
+    .click();
+  await expect(
+    page.getByText("remaining tasks: 0", { exact: true })
+  ).toBeVisible();
+  await page.waitForTimeout(1000); // Change this
 });
 
 test("should delete task", async ({ page }) => {
   await page.getByRole("button", { name: "CREATE TASK" }).click();
-  await page.locator("input[placeholder='Pick a due date (optional)']").click();
-  await page.getByText("20", { exact: true }).click();
+  await page
+    .locator("input[placeholder*='due date']")
+    .fill(process.env.TASK_DUE_DATE || "");
   await page
     .getByText(process.env.TASK_PRIORITY_LEVEL || "", { exact: true })
     .click();
@@ -106,5 +167,17 @@ test("should delete task", async ({ page }) => {
   await expect(
     page.getByText("remaining tasks: 1", { exact: true })
   ).toBeVisible();
-  await page.waitForTimeout(2000); // Change this
+  await expect(
+    page.locator("[data-cy='todo']").filter({ hasText: process.env.TASK_NAME })
+  ).toBeVisible();
+  await page
+    .locator("[data-cy='todo']")
+    .filter({ hasText: process.env.TASK_NAME })
+    .locator("svg")
+    .last()
+    .click();
+  await expect(
+    page.getByText("It looks like your to-do list is empty!", { exact: true })
+  ).toBeVisible();
+  await page.waitForTimeout(1000); // Change this
 });

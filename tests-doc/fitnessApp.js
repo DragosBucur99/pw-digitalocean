@@ -14,6 +14,11 @@ module.exports.testCases = [
         type: "searchbox",
         label: "FOOD",
       },
+      {
+        name: "Amount (grams)",
+        type: "number",
+        label: "FOOD_AMOUNT",
+      },
     ],
   },
   {
@@ -38,6 +43,11 @@ module.exports.testCases = [
         type: "number",
         label: "FOOD_AMOUNT",
       },
+      {
+        name: "New amount (grams)",
+        type: "number",
+        label: "NEW_FOOD_AMOUNT",
+      },
     ],
   },
   {
@@ -55,6 +65,11 @@ module.exports.testCases = [
         name: "What food do you want to add?",
         type: "searchbox",
         label: "FOOD",
+      },
+      {
+        name: "Amount (grams)",
+        type: "number",
+        label: "FOOD_AMOUNT",
       },
     ],
   },
@@ -77,7 +92,7 @@ module.exports.testCases = [
       },
       {
         name: "Task due date",
-        type: "searchbox",
+        type: "date",
         label: "TASK_DUE_DATE",
       },
       {
@@ -102,7 +117,7 @@ module.exports.testCases = [
       },
       {
         name: "Task due date",
-        type: "searchbox",
+        type: "date",
         label: "TASK_DUE_DATE",
       },
       {
@@ -126,7 +141,7 @@ module.exports.testCases = [
       },
       {
         name: "Task due date",
-        type: "searchbox",
+        type: "date",
         label: "TASK_DUE_DATE",
       },
       {
